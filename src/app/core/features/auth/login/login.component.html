@@ -1,0 +1,35 @@
+<div style="max-width: 400px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px;">
+  <h2 style="text-align: center;">Giriş Yap</h2>
+
+  <div *ngIf="errorMessage" style="color: red; margin-bottom: 10px;">{{ errorMessage }}</div>
+
+  <label>E-posta</label>
+  <input type="email" [(ngModel)]="email" class="form-control" />
+
+  <label>Şifre</label>
+  <div style="position: relative;">
+    <input
+      [type]="showPassword ? 'text' : 'password'"
+      [(ngModel)]="password"
+      class="form-control"
+      placeholder="Şifre"
+    />
+    <i
+      class="fa-solid"
+      [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+      (click)="showPassword = !showPassword"
+      style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;">
+    </i>
+  </div>
+
+  <button
+    (click)="onSubmit()"
+    [disabled]="isLoading"
+    style="width: 100%; margin-top: 10px;">
+    {{ isLoading ? 'Giriş yapılıyor...' : 'Giriş Yap' }}
+  </button>
+
+  <p style="margin-top: 15px; text-align: center;">
+    Hesabınız yok mu? <a style="color: blue; cursor: pointer; text-decoration: underline;" (click)="goToRegister()">Kayıt Ol</a>
+  </p>
+</div>

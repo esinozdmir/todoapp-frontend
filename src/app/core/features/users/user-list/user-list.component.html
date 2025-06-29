@@ -1,0 +1,10 @@
+<div class="user-list">
+  <h2>Kullanıcı Listesi</h2>
+
+  <ul>
+    <li *ngFor="let user of users">
+      {{ user.firstName }} {{ user.lastName }}
+      <span *ngIf="isAdmin(user)" class="admin-label">👑 Admin</span>
+    </li>
+  </ul>
+</div>

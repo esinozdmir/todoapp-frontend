@@ -1,0 +1,147 @@
+<div class="header">
+  <div class="header-top">
+    <div class="welcome-text">
+      <h2>Task Board</h2>
+    </div>
+    
+  </div>
+  
+   
+      <button (click)="toggleTaskForm()" class="expand-btn" title="Detailed form">
+        {{ showTaskForm ? '✕' : 'Görev Oluştur' }}
+      </button>
+
+
+  <div *ngIf="showTaskForm" class="detailed-task-form">
+    <h4>Yeni Task Oluştur</h4>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Başlık *</label>
+        <input
+          [(ngModel)]="newTaskTitle"
+          placeholder=""
+          class="form-input"
+        />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group full-width">
+        <label>Açıklama</label>
+        <textarea
+          [(ngModel)]="newTaskDescription"
+          placeholder=""
+          rows="3"
+          class="form-textarea"
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Atama : </label>
+        <select [(ngModel)]="selectedUserId" class="form-select">
+          <option [value]="null">Kullanıcı Seç...</option>
+          <option *ngFor="let user of users" [value]="user.id">
+            {{ getUserFullName(user) }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button (click)="addTask()" class="create-btn" [disabled]="!newTaskTitle.trim()">
+        Görev Oluştur
+      </button>
+      <button (click)="clearTaskForm()" class="cancel-btn">
+        İptal
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="board">
+  <div *ngFor="let column of columns" class="column">
+    <h3>{{ getColumnTitle(column) }}</h3>
+    <div
+      cdkDropList
+      [id]="column"
+      [cdkDropListData]="getTasks(column)"
+      [cdkDropListConnectedTo]="columns"
+      (cdkDropListDropped)="drop($event, column)"
+      class="task-list"
+    >
+      <div *ngFor="let task of getTasks(column)" cdkDrag class="task">
+        <div *ngIf="editingTask?.id === task.id" class="task-edit-mode">
+          <input
+            [(ngModel)]="editingTitle"
+            class="edit-title-input"
+            placeholder="Task title..."
+          />
+          <textarea
+            [(ngModel)]="editingDescription"
+            class="edit-description-input"
+            placeholder="Task description..."
+            rows="3"
+          ></textarea>
+          <select
+            [(ngModel)]="editingAssignedUserId"
+            class="edit-assignee-select"
+          >
+            <option [value]="null">Unassigned</option>
+            <option *ngFor="let user of users" [value]="user.id">
+              {{ getUserFullName(user) }}
+            </option>
+          </select>
+          <div class="edit-buttons">
+            <button (click)="saveTaskEdit()" class="save-btn">Save</button>
+            <button (click)="cancelEdit()" class="cancel-btn-small">Cancel</button>
+          </div>
+        </div>
+
+        <div *ngIf="editingTask?.id !== task.id" class="task-display-mode">
+          <div class="task-header">
+            <div class="task-title">{{ task.title }}</div>
+            <div class="task-actions">
+              <button (click)="startEditTask(task)" class="edit-btn" title="Edit task">✏️</button>
+              <button (click)="toggleAssignMenu(task)" class="assign-btn" title="Assign task">👤</button>
+               <button (click)="deleteTask(task)" class="assign-btn" title="Delete task">🗑️</button>
+            </div>
+          </div>
+
+          <div class="task-description" *ngIf="task.description">
+            {{ task.description }}
+          </div>
+
+          <div *ngIf="assigningTask?.id === task.id" class="assign-menu">
+            <select
+              [(ngModel)]="tempAssignedUserId"
+              (ngModelChange)="assignTaskToUser(task, $event)"
+              class="quick-assign-select"
+            >
+              <option [value]="null">Unassigned</option>
+              <option *ngFor="let user of users" [value]="user.id">
+                {{ getUserFullName(user) }}
+              </option>
+            </select>
+          </div>
+
+          <div class="task-footer">
+            <div class="task-assignee">
+              <span *ngIf="task.assignedUser" class="assignee-tag">
+                {{ getUserFullName(task.assignedUser) }}
+              </span>
+              <span *ngIf="!task.assignedUser" class="unassigned-tag">
+                Unassigned
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="getTasks(column).length === 0" class="empty-state">
+        Henüz görev yok
+      </div>
+    </div>
+  </div>
+</div>

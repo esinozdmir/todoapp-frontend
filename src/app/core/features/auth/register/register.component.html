@@ -1,0 +1,60 @@
+<div style="max-width: 400px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px;">
+  <h2 style="text-align: center;">Kayıt Ol</h2>
+
+  <div *ngIf="errorMessage" style="color: red; margin-bottom: 10px;">{{ errorMessage }}</div>
+
+  <label>Ad</label>
+  <input type="text" [(ngModel)]="firstName" class="form-control" />
+  <small style="color: red">{{ errors.firstName }}</small>
+  <p></p>
+  <label>Soyad</label>
+  <input type="text" [(ngModel)]="lastName" class="form-control" />
+  <small style="color: red">{{ errors.lastName }}</small>
+  <p></p>
+  <label>E-posta</label>
+  <input type="email" [(ngModel)]="email" class="form-control" (input)="validateEmail()"/>
+<div *ngIf="errors.email" class="error">{{ errors.email }}</div>
+  <p></p>
+  <label>Şifre</label>
+  <div style="position: relative;">
+    <input
+      [type]="showPassword ? 'text' : 'password'"
+      [(ngModel)]="password"
+      (input)="validatePassword()"
+      class="form-control"
+    />
+    <i
+      class="fa-solid"
+      [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+      (click)="showPassword = !showPassword"
+      style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"
+    ></i>
+  </div>
+  <small style="color: red">{{ errors.password }}</small>
+  <p></p>
+  <label>Şifre Tekrar</label>
+  <div style="position: relative;">
+    <input
+      [type]="showConfirmPassword ? 'text' : 'password'"
+      [(ngModel)]="confirmPassword"
+      (input)="validateConfirmPassword()"
+      class="form-control"
+    />
+    <i
+      class="fa-solid"
+      [ngClass]="showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'"
+      (click)="showConfirmPassword = !showConfirmPassword"
+      style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"
+    ></i>
+  </div>
+  <p></p>
+  <small style="color: red">{{ errors.confirmPassword }}</small>
+
+  <button (click)="onSubmit()" [disabled]="isLoading" style="width: 100%; margin-top: 10px;">
+    {{ isLoading ? 'Kayıt olunuyor...' : 'Kayıt Ol' }}
+  </button>
+
+  <p style="margin-top: 15px; text-align: center;">
+    Zaten bir hesabınız var mı? <a style="color: blue; cursor: pointer; text-decoration: underline;" (click)="goToLogin()" type="button">Giriş Yap</a>
+  </p>
+</div>

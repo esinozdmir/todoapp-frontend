@@ -1,1 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
+/* Bootstrap import */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+/* Angular Material (isteğe bağlı) */
+@import '@angular/material/prebuilt-themes/azure-blue.css';
+
+/* Custom styles */
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f8f9fa;
+}
+
+/* Custom Bootstrap overrides */
+.btn-primary {
+  background-color: #0079bf;
+  border-color: #0079bf;
+}
+
+.btn-primary:hover {
+  background-color: #005a8b;
+  border-color: #005a8b;
+}

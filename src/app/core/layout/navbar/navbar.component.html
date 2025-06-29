@@ -1,0 +1,10 @@
+<!-- navbar.component.html -->
+<nav class="navbar">
+<div class="nav-title">
+  <a [routerLink]="['/home']" class="nav-link">Todo App</a>
+</div>
+  <div class="nav-right">
+    <button class="nav-btn" (click)="goToUsers()">Kullanıcılar</button>
+    <button class="logout-btn" (click)="logout()">Çıkış</button>
+  </div>
+</nav>
