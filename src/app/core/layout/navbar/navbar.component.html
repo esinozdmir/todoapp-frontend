@@ -3,8 +3,21 @@
 <div class="nav-title">
   <a [routerLink]="['/home']" class="nav-link">Todo App</a>
 </div>
+
+<div class="welcome-message" *ngIf="currentUser">
+  Hoş geldin, {{ currentUser.firstName }} {{ currentUser.lastName }}
+</div>
+
+
+
   <div class="nav-right">
-    <button class="nav-btn" (click)="goToUsers()">Kullanıcılar</button>
-    <button class="logout-btn" (click)="logout()">Çıkış</button>
+<button class="nav-btn" [routerLink]="['/my-tasks']">Görevlerim</button>
+
+    <button 
+      *ngIf="currentUser?.role === 'ADMIN'" 
+      class="nav-btn" 
+      (click)="goToUsers()">
+      Kullanıcılar
+    </button>    <button class="logout-btn" (click)="logout()">Çıkış</button>
   </div>
 </nav>

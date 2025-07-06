@@ -9,4 +9,5 @@ export interface Task {
   status: 'todo' | 'in_progress' | 'review' | 'done';
   
   assignedUser?: User;
+  deadline?: string;
 }

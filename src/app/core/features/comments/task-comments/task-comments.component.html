@@ -1,0 +1,19 @@
+<div class="comment-section">
+
+  <div *ngFor="let comment of comments" class="comment">
+    <strong>{{ comment.authorFullName }}</strong>: {{ comment.content }}
+    <span style="font-size: 0.8em; color: gray;">
+      ({{ comment.createdAt | date:'short' }})
+    </span>
+    <button *ngIf="comment.userId === currentUserId" (click)="deleteComment(comment.id!)">Sil</button>
+  </div>
+
+  <div class="add-comment">
+    <input
+      [(ngModel)]="newCommentContent"
+      placeholder="Yorum yaz..."
+      style="width: 80%;"
+    />
+    <button (click)="addComment()">Ekle</button>
+  </div>
+</div>

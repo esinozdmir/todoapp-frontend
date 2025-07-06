@@ -1,14 +1,26 @@
 .user-list {
-  padding: 20px;
-  background: #f9f9f9;
-  border-radius: 10px;
+  max-width: 600px;
+  margin: 30px auto;
+  font-family: sans-serif;
 }
 
-.admin-label {
-  color: white;
-  background: #007bff;
-  padding: 2px 6px;
-  border-radius: 5px;
-  margin-left: 10px;
-  font-size: 12px;
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
+}
+
+th {
+  background-color: #f2f2f2;
 }

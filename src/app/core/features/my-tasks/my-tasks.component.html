@@ -1,0 +1,14 @@
+<div class="my-tasks-container">
+
+  <div *ngIf="tasks.length === 0" style="color: gray; font-style: italic; padding: 8px;">
+    Size atanmış görev bulunmamaktadır.
+  </div>
+
+  <ul *ngIf="tasks.length > 0" style="list-style: none; padding: 0;">
+    <li *ngFor="let task of tasks" style="border: 1px solid #ccc; padding: 12px; border-radius: 6px; margin-bottom: 10px;">
+      <h4 style="margin: 0 0 6px 0;">{{ task.title }}</h4>
+      <p style="margin: 0; font-size: 14px;">{{ task.description || 'Açıklama yok' }}</p>
+    </li>
+  </ul>
+
+</div>

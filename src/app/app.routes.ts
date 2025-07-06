@@ -20,5 +20,14 @@ export const routes: Routes = [
   {
     path: 'users',
     loadComponent: () =>
-    import('./core/features/users/user-list/user-list.component').then((m) => m.UserListComponent),  },
+    import('./core/features/users/user-list/user-list.component').then((m) => m.UserListComponent),  
+  },
+
+  {
+  path: 'my-tasks',
+  loadComponent: () => 
+  import('./core/features/my-tasks/my-tasks.component').then(m => m.MyTasksComponent)
+}
+
+
 ];

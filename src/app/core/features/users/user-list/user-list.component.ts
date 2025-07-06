@@ -1,33 +1,68 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { User } from '../../../../models/user.model';
-import { TaskService } from '../../../services/task.services';
+import { UserService } from '../../../services/user.services';
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [CommonModule],
-  providers: [TaskService], 
+  imports: [CommonModule, FormsModule],
   templateUrl: './user-list.component.html',
-  styleUrls: ['./user-list.component.css']
+  styleUrls: ['./user-list.component.css'],
+  providers: [UserService]
 })
 export class UserListComponent implements OnInit {
   users: User[] = [];
+  editingUserId: number | null = null;
 
-  constructor(private taskService: TaskService) {}
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.taskService.getAllUsers().subscribe({
-      next: (data) => {
-        this.users = data;
-      },
-      error: (err) => {
-        console.error('Kullanıcılar alınamadı:', err);
-      }
+    this.loadUsers();
+  }
+
+  loadUsers() {
+    this.userService.getAllUsers().subscribe({
+      next: (data) => this.users = data,
+      error: (err) => console.error('Kullanıcılar alınamadı:', err)
     });
   }
 
-  isAdmin(user: User): boolean {
-    return user.id === 6;
+  editUser(id: number) {
+    this.editingUserId = id;
+  }
+
+  cancelEdit() {
+    this.editingUserId = null;
+    this.loadUsers(); 
+  }
+
+  updateUser(user: User) {
+    if (user.id) {
+      this.userService.updateUser(user.id, user).subscribe({
+        next: () => {
+          alert('Kullanıcı güncellendi');
+          this.editingUserId = null;
+        },
+        error: (err) => console.error('Güncelleme hatası:', err)
+      });
+    }
+  }
+
+  deleteUser(id?: number) {
+    if (id && confirm('Bu kullanıcıyı silmek istediğinize emin misiniz?')) {
+      this.userService.deleteUser(id).subscribe({
+        next: () => {
+          alert('Kullanıcı silindi');
+          this.users = this.users.filter(u => u.id !== id);
+        },
+        error: (err) => console.error('Silme hatası:', err)
+      });
+    }
+  }
+
+  isEditing(user: User): boolean {
+    return user.id === this.editingUserId;
   }
 }

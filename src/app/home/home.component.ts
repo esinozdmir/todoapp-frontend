@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { TaskService } from '../core/services/task.services';
 import { Router } from '@angular/router';
 import { User } from '../models/user.model';
+import { TaskCommentsComponent } from '../core/features/comments/task-comments/task-comments.component';
 
 
 
@@ -15,7 +16,7 @@ import { User } from '../models/user.model';
   standalone: true,
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  imports: [CommonModule, DragDropModule, FormsModule]
+  imports: [CommonModule, DragDropModule, FormsModule,TaskCommentsComponent]
 })
 export class HomeComponent implements OnInit {
   todo: Task[] = [];
@@ -42,6 +43,8 @@ export class HomeComponent implements OnInit {
 
   assigningTask: Task | null = null;
   tempAssignedUserId: number | null = null;
+
+  newTaskDeadline = '';
 
   columns = ['todo', 'in_progress', 'review', 'done'];
   columnTitles = {
@@ -115,31 +118,32 @@ export class HomeComponent implements OnInit {
   }
 
   addTask() {
-    if (!this.newTaskTitle.trim()) return;
+  if (!this.newTaskTitle.trim()) return;
 
-    const newTask = {
-      title: this.newTaskTitle.trim(),
-      description: this.newTaskDescription.trim() || undefined,
-      status: 'todo' as const,
-      assignedUserId: this.selectedUserId || undefined
-    };
+  const newTask = {
+    title: this.newTaskTitle.trim(),
+    description: this.newTaskDescription.trim() || undefined,
+    status: 'todo' as const,
+    assignedUserId: this.selectedUserId || undefined,
+  deadline: this.newTaskDeadline ? new Date(this.newTaskDeadline).toISOString().split('T')[0] : undefined  };
 
-    this.taskService.createTask(newTask).subscribe({
-      next: (task) => {
-        this.todo.push(task);
-        this.clearTaskForm();
-        console.log('Task created successfully:', task);
-      },
-      error: (error) => {
-        console.error('Error creating task:', error);
-      }
-    });
-  }
+  this.taskService.createTask(newTask).subscribe({
+    next: (task) => {
+      this.todo.push(task);
+      this.clearTaskForm();
+      console.log('Task created successfully:', task);
+    },
+    error: (error) => {
+      console.error('Error creating task:', error);
+    }
+  });
+}
 
   clearTaskForm() {
     this.newTaskTitle = '';
     this.newTaskDescription = '';
     this.selectedUserId = null;
+    this.newTaskDeadline = '';
     this.showTaskForm = false;
   }
 

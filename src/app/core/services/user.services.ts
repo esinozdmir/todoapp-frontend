@@ -17,4 +17,17 @@ export class UserService {
   register(user: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/register`, user);
   }
+
+  updateUser(id: number, user: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/${id}`, user);
+  }
+
+  deleteUser(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${id}`);
+  }
+
+  getAllUsers(): Observable<any> {
+    return this.http.get(`${this.baseUrl}`);
+  }
+
 }

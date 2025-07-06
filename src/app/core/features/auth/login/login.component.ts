@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../../../services/user.services';
 import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,8 @@ export class LoginComponent {
 
   constructor(
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService 
   ) {}
 
   onSubmit() {
@@ -35,7 +37,12 @@ export class LoginComponent {
     this.userService.login(this.email, this.password).subscribe({
       next: (response) => {
         console.log('Giriş başarılı', response);
+              this.authService.setCurrentUser(response); 
         this.isLoading = false;
+
+        localStorage.setItem('user', JSON.stringify(response));
+
+
         alert('Giriş başarılı!');
        this.router.navigate(['/home']);
       },

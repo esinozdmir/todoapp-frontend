@@ -1,10 +1,53 @@
 <div class="user-list">
   <h2>Kullanıcı Listesi</h2>
 
-  <ul>
-    <li *ngFor="let user of users">
-      {{ user.firstName }} {{ user.lastName }}
-      <span *ngIf="isAdmin(user)" class="admin-label">👑 Admin</span>
-    </li>
-  </ul>
+  <table>
+    <thead>
+      <tr>
+        <th>Ad Soyad</th>
+        <th>Email</th>
+        <th>Rol</th>
+        <th>İşlemler</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>
+          <ng-container *ngIf="isEditing(user); else readName">
+            <input [(ngModel)]="user.firstName" placeholder="Ad">
+            <input [(ngModel)]="user.lastName" placeholder="Soyad">
+          </ng-container>
+          <ng-template #readName>{{ user.firstName }} {{ user.lastName }}</ng-template>
+        </td>
+
+        <td>
+          <ng-container *ngIf="isEditing(user); else readEmail">
+            <input [(ngModel)]="user.email" placeholder="Email">
+          </ng-container>
+          <ng-template #readEmail>{{ user.email }}</ng-template>
+        </td>
+
+        <td>
+          <ng-container *ngIf="isEditing(user); else readRole">
+            <select [(ngModel)]="user.role">
+              <option value="USER">USER</option>
+              <option value="ADMIN">ADMIN</option>
+            </select>
+          </ng-container>
+          <ng-template #readRole>{{ user.role }}</ng-template>
+        </td>
+
+        <td>
+          <ng-container *ngIf="isEditing(user); else actionButtons">
+            <button (click)="updateUser(user)">Kaydet</button>
+            <button (click)="cancelEdit()">İptal</button>
+          </ng-container>
+          <ng-template #actionButtons>
+            <button (click)="editUser(user.id!)">Düzenle</button>
+            <button (click)="deleteUser(user.id)">Sil</button>
+          </ng-template>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
